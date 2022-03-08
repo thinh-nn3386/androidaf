@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">androidaf</string>
+    <string name="mp_title">Locker password manager</string>
+    <string name="mp_subtitle">Enter your Master Password to unlock</string>
+    <string name="mp_master_pass">Master Password</string>
+    <string name="mp_login">Unlock</string>
+    <string name="mp_faceid">Use Face id/Touch id</string>
+    <string name="cancel">Cancel</string>
+    <string name="title_activity_login_list">LoginList</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+</resources>
