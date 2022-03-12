@@ -11,7 +11,8 @@
         android:theme="@style/Theme.Androidaf">
         <activity
             android:name=".af.LoginList"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".LockerAutofillClient"
             android:exported="false" />

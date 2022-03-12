@@ -2,11 +2,17 @@ package com.example.androidaf;
 
 import static android.view.autofill.AutofillManager.EXTRA_AUTHENTICATION_RESULT;
 
+import static androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG;
+import static androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK;
+import static androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL;
+
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+
+
 import android.os.Build;
 import android.os.Bundle;
 import android.service.autofill.Dataset;
@@ -20,6 +26,7 @@ import android.widget.Button;
 import android.util.ArrayMap;
 import android.os.Parcelable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
@@ -27,6 +34,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 
 import com.example.androidaf.af.AutofillData;
 import com.example.androidaf.af.AutofillDataKeychain;
@@ -35,6 +45,7 @@ import com.example.androidaf.af.LoginList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 
 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -66,6 +77,9 @@ public class LockerAutofillClient extends AppCompatActivity {
     }
 
 
+    private Executor executor;
+    private BiometricPrompt biometricPrompt;
+    private BiometricPrompt.PromptInfo promptInfo;
     private final ActivityResultLauncher<Intent> loginList =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::lockerLauncherResult);
 
@@ -75,12 +89,47 @@ public class LockerAutofillClient extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        setContentView(R.layout.activity_locker_autofill_client);
+        executor = ContextCompat.getMainExecutor(this);
+        biometricPrompt = new BiometricPrompt(this,
+                executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode,
+                                              @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                Toast.makeText(getApplicationContext(),
+                        "Authentication error: " + errString, Toast.LENGTH_SHORT)
+                        .show();
+            }
 
+            @Override
+            public void onAuthenticationSucceeded(
+                    @NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                preformLoginList();
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                Toast.makeText(getApplicationContext(), "Authentication failed",
+                        Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
+        promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Biometric login for my app")
+                .setSubtitle("Log in using your biometric credential")
+                .setAllowedAuthenticators(BIOMETRIC_STRONG|DEVICE_CREDENTIAL)
+                .setConfirmationRequired(false)
+                .build();
+
+        biometricPrompt.authenticate(promptInfo);
+
+        setContentView(R.layout.activity_locker_autofill_client);
         AutofillDataKeychain autoFillHelper = new AutofillDataKeychain();
         List<AutofillData> loginList = new ArrayList<>();
         for (int i = 0 ; i < 10; i ++){
-            AutofillData data  = new AutofillData(String.valueOf(i), "234324" + i,"asd","2342342" + String.valueOf(i),"facebook.com");
+            AutofillData data  = new AutofillData(String.valueOf(i), String.valueOf(i),"asd",String.valueOf(i),String.valueOf(i));
             autoFillHelper.credentials.add(data);
 //            autoFillHelper.otherCredentials.add(data);
         }
@@ -90,7 +139,17 @@ public class LockerAutofillClient extends AppCompatActivity {
         TextView email  = (TextView) findViewById(R.id.mp_email);
         email.setText(autoFillHelper.email);
 
+
+//        // Prompt appears when user clicks "Log in".
+//        // Consider integrating with the keystore to unlock cryptographic operations,
+//        // if needed by your app.
+//        Button biometricLoginButton = findViewById(R.id.biometric_login);
+//        biometricLoginButton.setOnClickListener(view -> {
+//
+//        });
     }
+
+
 
     private void lockerLauncherResult(final ActivityResult result) {
         if (result.getResultCode() == 1) {

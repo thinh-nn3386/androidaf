@@ -61,6 +61,8 @@ public class Parser {
     }
     private void addAutofillableFields(@NonNull Map<String, AutofillId> fields,
                                        @NonNull AssistStructure.ViewNode node) {
+        Log.d("Type", "asd " + node.getIdType());
+        Log.d("inputType", "asd " + node.getIdType());
         String hint = getHint(node);
         if (hint != null) {
             AutofillId id = node.getAutofillId();

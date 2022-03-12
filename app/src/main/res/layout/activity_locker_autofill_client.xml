@@ -65,6 +65,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:windowSoftInputMode="stateHidden"
         android:id="@+id/master_password"
         android:layout_width="348dp"
         android:layout_height="50dp"

@@ -10,6 +10,13 @@
         <entry key="..\:/android/androidaf/app/src/main/res/layout/list_item.xml" value="0.25416666666666665" />
         <entry key="..\:/android/androidaf/app/src/main/res/layout/remote_locker_app.xml" value="0.25416666666666665" />
         <entry key="..\:/android/androidaf/app/src/main/res/xml/autofill_service_configuration.xml" value="0.25416666666666665" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1984375" />
+        <entry key="app/src/main/res/drawable/ic_logo.xml" value="0.1984375" />
+        <entry key="app/src/main/res/drawable/ic_logo_locker.xml" value="0.1984375" />
+        <entry key="app/src/main/res/drawable/search_bg.xml" value="0.25277777777777777" />
+        <entry key="app/src/main/res/layout/activity_locker_autofill_client.xml" value="0.18229166666666666" />
+        <entry key="app/src/main/res/layout/activity_login_list.xml" value="0.18" />
+        <entry key="app/src/main/res/menu/menu.xml" value="0.18796296296296297" />
       </map>
     </option>
   </component>
