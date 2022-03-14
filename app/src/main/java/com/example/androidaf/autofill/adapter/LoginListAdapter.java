@@ -1,4 +1,4 @@
-package com.example.androidaf.af;
+package com.example.androidaf.autofill.adapter;
 
 import android.content.Context;
 import android.os.Build;
@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.example.androidaf.R;
+import com.example.androidaf.autofill.AutofillItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +25,12 @@ import java.util.stream.Collectors;
 
 
 public class LoginListAdapter extends BaseAdapter {
-    private List<AutofillData> listData;
-    private List<AutofillData> filterData;
+    private List<AutofillItem> listData;
+    private List<AutofillItem> filterData;
     private LayoutInflater layoutInflater;
     private Context context;
 
-    public LoginListAdapter(Context context, List<AutofillData> listData){
+    public LoginListAdapter(Context context, List<AutofillItem> listData){
         this.context = context;
         this.listData = listData;
         filterData = new ArrayList<>(listData);
@@ -53,7 +54,7 @@ public class LoginListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = layoutInflater.inflate(R.layout.list_item, null);
-        AutofillData data = this.filterData.get(position);
+        AutofillItem data = this.filterData.get(position);
         TextView name = (TextView) convertView.findViewById(R.id.login_name);
         TextView uri = (TextView) convertView.findViewById(R.id.login_uri);
         name.setText(data.getName());
@@ -69,8 +70,8 @@ public class LoginListAdapter extends BaseAdapter {
                 if (key.isEmpty()) {
                     filterData = listData;
                 } else {
-                    List<AutofillData> listFiltered = new ArrayList<>();
-                    for (AutofillData data: listData) {
+                    List<AutofillItem> listFiltered = new ArrayList<>();
+                    for (AutofillItem data: listData) {
                         if (data.getName().toLowerCase().contains(key)){
                             listFiltered.add(data);
                             break;
@@ -93,7 +94,7 @@ public class LoginListAdapter extends BaseAdapter {
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                filterData = (List<AutofillData>) results.values;
+                filterData = (List<AutofillItem>) results.values;
                 notifyDataSetChanged();
             }
         };

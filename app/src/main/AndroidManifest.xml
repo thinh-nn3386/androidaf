@@ -10,12 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Androidaf">
         <activity
-            android:name=".af.LoginList"
+            android:name=".autofill.activities.VerifyMasterPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".autofill.activities.LoginListActivity"
             android:exported="false"
             android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".LockerAutofillClient"
-            android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -27,9 +28,9 @@
         </activity>
 
         <service
-            android:name=".af.LockerAutoFillService"
+            android:name=".autofill.LockerAutoFillService"
             android:exported="false"
-            android:label="Locker"
+            android:label="clone"
             android:permission="android.permission.BIND_AUTOFILL_SERVICE">
             <intent-filter>
                 <action android:name="android.service.autofill.AutofillService" />

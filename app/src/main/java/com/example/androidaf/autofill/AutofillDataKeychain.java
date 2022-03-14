@@ -1,7 +1,9 @@
-package com.example.androidaf.af;
+package com.example.androidaf.autofill;
 
 
 import android.util.Log;
+
+import com.example.androidaf.autofill.AutofillItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,8 +29,8 @@ public class AutofillDataKeychain {
     public String email = "thinhnn@cystack.net";
     public String hashMassterPass;
     public String userAvatar;
-    public ArrayList<AutofillData> credentials = new ArrayList<>();
-    public ArrayList<AutofillData> otherCredentials = new ArrayList<>();
+    public ArrayList<AutofillItem> credentials = new ArrayList<>();
+    public ArrayList<AutofillItem> otherCredentials = new ArrayList<>();
 
 
 //    public AutofillDataKeychain(ReactApplicationContext reactContext, String domain) {
@@ -57,11 +59,10 @@ public class AutofillDataKeychain {
                     String name = (String) map.get("name");
                     String id = (String) map.get("id");
 
-
                     if (domain.contains(uri)) {
-                        credentials.add(new AutofillData(id, username, password, name, uri));
+                        credentials.add(new AutofillItem(id, username, password, name, uri));
                     } else {
-                        otherCredentials.add(new AutofillData(id, username, password, name, uri));
+                        otherCredentials.add(new AutofillItem(id, username, password, name, uri));
                     }
                 }
             }

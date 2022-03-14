@@ -1,4 +1,6 @@
-package com.example.androidaf.af;
+package com.example.androidaf.autofill.activities;
+
+import static com.example.androidaf.autofill.activities.VerifyMasterPasswordActivity.EXTRA_LOGIN_DATA;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,28 +9,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.example.androidaf.R;
+import com.example.androidaf.autofill.AutofillItem;
+import com.example.androidaf.autofill.adapter.LoginListAdapter;
 
 import java.util.ArrayList;
 
 
-@RequiresApi(api = Build.VERSION_CODES.N)
-public class LoginList extends AppCompatActivity {
+@RequiresApi(api = Build.VERSION_CODES.O)
+public class LoginListActivity extends AppCompatActivity {
     LoginListAdapter listAdapter;
     ListView listView;
     SearchView searchView;
     CharSequence search = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,13 @@ public class LoginList extends AppCompatActivity {
         setContentView(R.layout.activity_login_list);
 
         Intent intent = getIntent();
-        ArrayList<AutofillData> loginList = (ArrayList<AutofillData>) intent.getSerializableExtra("data");
+        ArrayList<AutofillItem> loginList = intent.getParcelableArrayListExtra(EXTRA_LOGIN_DATA);
+
+        ArrayList<String> lists = (ArrayList<String>) getIntent().getSerializableExtra("StringKey");
+        Log.d("asd", String.valueOf(lists.size()));
+        Log.d("asd", getIntent().getStringExtra("asd"));
+
+
 
         listAdapter = new LoginListAdapter(this, loginList);
         listView = findViewById(R.id.listView);
@@ -46,7 +52,7 @@ public class LoginList extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AutofillData data = (AutofillData) listAdapter.getItem(position);
+                AutofillItem data = (AutofillItem) listAdapter.getItem(position);
                 Intent intent = new Intent();
                 intent.putExtra("autofill_data", data);
                 setResult(1, intent);
